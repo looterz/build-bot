@@ -33,7 +33,7 @@ webhook.on('build.complete', async build => {
 webhook.on('git.push', async push => {
     try {
         bot.codePushed({
-            message: push.message.markdown,
+            message: push.message.text,
             details: push.detailedMessage.markdown
         })
     }
