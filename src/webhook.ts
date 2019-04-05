@@ -13,7 +13,6 @@ export default function createWebHookListener() {
         if (isWebHookRequest(req)) {
             emitter.emit(req.body.eventType, req.body)
             res.sendStatus(200)
-            console.log(req.body)
         } else next()
     })
 

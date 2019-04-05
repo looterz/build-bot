@@ -45,7 +45,12 @@ export default function createBot() {
                 .addField('Pipeline', info.pipeline)
                 .addField('Commit', `[${info.commitSha}](${info.commit})`)
 
-            channel.send({ embed })
+            try {
+                channel.send({ embed })
+            }
+            catch (err) {
+                console.log(err)
+            }
         },
         codePushed(info: ICodePushInfo) {
             if (!config.bot.enable) return
@@ -57,7 +62,12 @@ export default function createBot() {
                 .setFooter('Azure DevOps', 'https://azurecomcdn.azureedge.net/cvt-c8c25e81432b2564b126c4a01fde1d9ee2e5fe1a4390e6a8494c91255fd5b2c3/images/shared/services/devops/pipelines-icon-80.png')
                 .addField('Details', info.details)
 
-            channel.send({ embed })
+            try {
+                channel.send({ embed })
+            }
+            catch (err) {
+                console.log(err)
+            }
         }
     }
 }
