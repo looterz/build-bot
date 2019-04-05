@@ -40,7 +40,7 @@ webhook.on('build.complete', async build => {
 webhook.on('git.push', async push => {
     try {
         bot.codePushed({
-            title: push.pushedBy.displayName + ' has pushed updates to ' + push.repository.name,
+            title: push.resource.pushedBy.displayName + ' has pushed updates to ' + push.repository.name,
             details: push.detailedMessage.markdown
         })
     }
