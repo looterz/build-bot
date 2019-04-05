@@ -1,6 +1,7 @@
 import azure from './azure'
 import createBot from './bot'
 import createWebhook from './webhook'
+import * as moment from 'moment'
 
 const bot = createBot()
 const webhook = createWebhook()
@@ -13,7 +14,12 @@ webhook.on('build.complete', async build => {
         
     
         const commitSha = /:([a-zA-Z0-9]+)$/.exec(build.resource.sourceGetVersion)[1]
-    
+        
+        const startTime = moment(build.resource.startTime);
+        const finishTime = moment(build.resource.finishTime);
+        const duration = moment.duration(finishTime.diff(startTime))
+        const durationFormatted = duration.get("hours").toString().padStart(2, '0') +":"+ duration.get("minutes").toString().padStart(2, '0') +":"+ duration.get("seconds").toString().padStart(2, '0');
+
         bot.buildComplete({
             commit: definition.repository.properties.manageUrl + '/commit/' + commitSha,
             commitSha: commitSha,
@@ -21,7 +27,8 @@ webhook.on('build.complete', async build => {
             buildUrl: /\(([^)]+)\)/.exec(build.message.markdown)[1],
             message: build.message.text,
             project: project.name,
-            pipeline: build.resource.definition.name
+            pipeline: build.resource.definition.name,
+            duration: durationFormatted
         })
     }
     catch (err) {
@@ -33,7 +40,7 @@ webhook.on('build.complete', async build => {
 webhook.on('git.push', async push => {
     try {
         bot.codePushed({
-            message: push.message.text,
+            title: push.pushedBy.displayName + ' has pushed updates to ' + push.repository.name + 'repo',
             details: push.detailedMessage.markdown
         })
     }
