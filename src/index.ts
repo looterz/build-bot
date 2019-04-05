@@ -30,6 +30,19 @@ webhook.on('build.complete', async build => {
     }
 })
 
+webhook.on('git.push', async push => {
+    try {
+        bot.codePushed({
+            message: push.message.markdown,
+            details: push.detailedMessage.markdown
+        })
+    }
+    catch (err) {
+        console.error('Error handling git push')
+        console.error(err)
+    }
+})
+
 async function getBuildDefinition(id: number, projectId: string) {
     const build = await azure.getBuildApi()
     let def = await build.getDefinition(id, projectId)

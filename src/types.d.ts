@@ -6,7 +6,8 @@ interface IConfig {
 
     bot: {
         enable: boolean
-        channel_id: string
+        builds_channel_id: string
+        commits_channel_id: string
         token: string
     }
 
